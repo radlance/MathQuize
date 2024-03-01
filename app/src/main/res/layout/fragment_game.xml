@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/timer"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_sum"
+        style="@style/FigureTextStyle"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:layout_margin="100dp"
+        android:background="@drawable/circle_background"
+        android:text="@string/sum"
+        app:layout_constraintBottom_toTopOf="@id/tv_visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_timer" />
+
+    <TextView
+        android:id="@+id/tv_visible"
+        style="@style/FigureTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:background="@color/marine_blue"
+        android:padding="25dp"
+        android:text="@string/visible_number"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/tv_question"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_sum" />
+
+    <TextView
+        android:id="@+id/tv_question"
+        style="@style/FigureTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/marine_blue"
+        android:padding="25dp"
+        android:text="@string/question_symbol"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_visible"
+        app:layout_constraintTop_toBottomOf="@id/tv_sum" />
+
+    <TextView
+        android:id="@+id/tv_right_percent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/right_answers"
+        app:layout_constraintBottom_toTopOf="@id/pb_right_answers"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_visible" />
+
+    <TextView
+        android:id="@+id/tv_answer_4"
+        style="@style/AnswerTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/sky_blue"
+        android:padding="15dp"
+        android:text="@string/sum"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_answer_5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_answer_5"
+        style="@style/AnswerTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/golden_yellow"
+        android:padding="15dp"
+        android:text="@string/sum"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_answer_6"
+        app:layout_constraintStart_toEndOf="@id/tv_answer_4" />
+
+    <TextView
+        android:id="@+id/tv_answer_6"
+        style="@style/AnswerTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/light_green"
+        android:padding="15dp"
+        android:text="@string/sum"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_answer_5" />
+
+    <TextView
+        android:id="@+id/tv_answer_1"
+        style="@style/AnswerTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/light_green"
+        android:padding="15dp"
+        android:text="@string/sum"
+        app:layout_constraintBottom_toTopOf="@id/tv_answer_4"
+        app:layout_constraintEnd_toStartOf="@id/tv_answer_2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_answer_2"
+        style="@style/AnswerTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/light_red"
+        android:padding="15dp"
+        android:text="@string/sum"
+        app:layout_constraintBottom_toTopOf="@id/tv_answer_5"
+        app:layout_constraintEnd_toStartOf="@id/tv_answer_3"
+        app:layout_constraintStart_toEndOf="@id/tv_answer_1" />
+
+    <TextView
+        android:id="@+id/tv_answer_3"
+        style="@style/AnswerTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/default_color"
+        android:padding="15dp"
+        android:text="@string/sum"
+        app:layout_constraintBottom_toTopOf="@id/tv_answer_6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_answer_2" />
+
+    <ProgressBar
+        android:id="@+id/pb_right_answers"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:max="100"
+        android:secondaryProgressTint="@android:color/background_dark"
+        app:layout_constraintBottom_toTopOf="@id/tv_answer_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_right_percent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">MathQuize</string>
+    <string name="brain">brains</string>
+    <string name="number_structure">Состав числа</string>
+    <string name="description">Правила игры: перед вами буде три фигуры, две снизу и одна сверху, в двух из них будут числа. Необходимо, чтобы сумма чисел из двух нижних фигур была равна числу в верхней фигуре, для этого нужно вставить недостающее число. \n\nПример: в верхнем круге число 7, в одном из нижних знак вопроса, а в другом число 4. Значит на месте вопросительного знака должно быть число 3, потому что 3 + 4 = 7</string>
+    <string name="next">понятно</string>
+    <string name="choose_level">Выберите уровень:</string>
+    <string name="test">тестовый</string>
+    <string name="easy">лёгкий</string>
+    <string name="medium">средний</string>
+    <string name="hard">тяжёлый</string>
+    <string name="timer">00:00</string>
+    <string name="sum">1</string>
+    <string name="visible_number">2</string>
+    <string name="question_symbol">?</string>
+    <string name="right_answers">Правильных ответов %s (минимум %s)</string>
+    <string name="smile">smile</string>
+    <string name="min_answers">Необходимое количество правильных ответов: %s</string>
+    <string name="score">Ваш счёт: %s</string>
+    <string name="min_percent">Необходимый процент правильных ответов: %s</string>
+    <string name="your_percent">Процент правильных ответов: %s</string>
+    <string name="try_again">попробовать снова</string>
 </resources>
