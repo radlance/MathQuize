@@ -1,7 +1,7 @@
 package com.example.mathquize.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mathquize.R
 
 class MainActivity : AppCompatActivity() {
