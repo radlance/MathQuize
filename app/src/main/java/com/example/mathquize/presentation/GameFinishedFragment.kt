@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.mathquize.R
 import com.example.mathquize.databinding.FragmentGameFinishedBinding
 import com.example.mathquize.domain.entity.GameResult
 
@@ -32,6 +33,12 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        addCallback()
+        binding.buttonTryAgain.setOnClickListener { retryGame() }
+        setupGameResult()
+    }
+
+    private fun addCallback() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -39,15 +46,42 @@ class GameFinishedFragment : Fragment() {
                 }
             }
         )
-        binding.buttonTryAgain.setOnClickListener {
-            retryGame()
-        }
     }
 
     private fun retryGame() {
         requireActivity()
             .supportFragmentManager
             .popBackStack(GameFragment.FRAGMENT_NAME, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    private fun setupGameResult() {
+        val smile = if (gameResult.winner) {
+            R.drawable.ic_smile
+        } else {
+            R.drawable.ic_sad
+        }
+
+        val percent =
+            (gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble() * 100).toInt()
+        with(binding) {
+            ivSmile.setImageResource(smile)
+            tvMinAnswers.text = formattedString(
+                R.string.min_answers,
+                gameResult.gameSettings.minCountOfRightAnswers
+            )
+
+            tvScore.text = formattedString(R.string.score, gameResult.countOfRightAnswers)
+            tvMinPercent.text = formattedString(
+                R.string.min_percent,
+                gameResult.gameSettings.minPercentageOfRightAnswers
+            )
+
+            tvPercent.text = formattedString(R.string.percent_of_right_answers, percent)
+        }
+    }
+
+    private fun formattedString(stringResource: Int, value: Int): String {
+        return String.format(getString(stringResource), value)
     }
 
     override fun onDestroyView() {
