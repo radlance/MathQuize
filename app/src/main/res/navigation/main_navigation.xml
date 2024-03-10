@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.mathquize.presentation.WelcomeFragment"
+        android:label="WelcomeFragment"
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_welcomeFragment_to_chooseLevelFragment"
+            app:destination="@id/chooseLevelFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseLevelFragment"
+        android:name="com.example.mathquize.presentation.ChooseLevelFragment"
+        android:label="ChooseLevelFragment"
+        tools:layout="@layout/fragment_choose_level">
+        <action
+            android:id="@+id/action_chooseLevelFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.example.mathquize.presentation.GameFragment"
+        android:label="GameFragment"
+        tools:layout="@layout/fragment_game">
+        <action
+            android:id="@+id/action_gameFragment_to_gameFinishedFragment"
+            app:destination="@id/gameFinishedFragment"
+            app:popUpTo="@id/gameFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="level"
+            app:argType="com.example.mathquize.domain.entity.Level" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFinishedFragment"
+        android:name="com.example.mathquize.presentation.GameFinishedFragment"
+        android:label="GameFinishedFragment"
+        tools:layout="@layout/fragment_game_finished">
+        <argument
+            android:name="gameResult"
+            app:argType="com.example.mathquize.domain.entity.GameResult" />
+    </fragment>
+</navigation>
