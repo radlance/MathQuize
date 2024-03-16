@@ -8,11 +8,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.mathquize.databinding.FragmentGameBinding
 import com.example.mathquize.domain.entity.GameResult
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 
 class GameFragment : Fragment() {
@@ -62,62 +67,87 @@ class GameFragment : Fragment() {
     }
 
     private fun finishGame() {
-        vm.gameResult.observe(viewLifecycleOwner) {
-            launchGameFinishedFragment(it)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                vm.gameResult.filterNotNull().collect {
+                    launchGameFinishedFragment(it)
+                }
+            }
         }
     }
 
     private fun observeTimer() {
-        vm.time.observe(viewLifecycleOwner) {
-            binding.tvTimer.text = it
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                vm.time.collect {
+                    binding.tvTimer.text = it
+                }
+            }
         }
     }
 
     private fun observeProgress() {
-        vm.progressAnswer.observe(viewLifecycleOwner) {
-            binding.tvRightPercent.text = it
-        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    vm.percentOfRightAnswers.collect {
+                        binding.pbRightAnswers.setProgress(it, true)
+                    }
+                }
 
-        vm.enoughCountOfRightAnswers.observe(viewLifecycleOwner) {
-            val color = getColorByState(it)
-            binding.tvRightPercent.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity().applicationContext,
-                    color
-                )
-            )
-        }
+                launch {
+                    vm.progressAnswer.collect {
+                        binding.tvRightPercent.text = it
+                    }
+                }
 
-        vm.percentOfRightAnswers.observe(viewLifecycleOwner) {
-            binding.pbRightAnswers.setProgress(it, true)
-        }
+                launch {
+                    vm.enoughCountOfRightAnswers.collect {
+                        val color = getColorByState(it)
+                        binding.tvRightPercent.setTextColor(
+                            ContextCompat.getColor(
+                                requireActivity().applicationContext,
+                                color
+                            )
+                        )
+                    }
+                }
 
-        vm.enoughPercent.observe(viewLifecycleOwner) {
-            val color = getColorByState(it)
-            binding.pbRightAnswers.progressTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    requireActivity().applicationContext,
-                    color
-                )
-            )
-        }
+                launch {
+                    vm.enoughPercent.collect {
+                        val color = getColorByState(it)
+                        binding.pbRightAnswers.progressTintList = ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                requireActivity().applicationContext,
+                                color
+                            )
+                        )
+                    }
+                }
 
-        vm.minPercent.observe(viewLifecycleOwner) {
-            binding.pbRightAnswers.secondaryProgress = it
+                launch {
+                    vm.minPercent.collect {
+                        binding.pbRightAnswers.secondaryProgress = it
+                    }
+                }
+            }
         }
     }
 
     private fun observeQuestion() {
-        vm.question.observe(viewLifecycleOwner) {
-            with(binding) {
-                tvSum.text = it.sum.toString()
-                tvVisible.text = it.visibleNumber.toString()
-            }
-
-            for ((textView, answer) in tvAnswers.zip(it.options)) {
-                textView.text = answer.toString()
-                textView.setOnClickListener {
-                    vm.chooseAnswer(textView.text.toString().toInt())
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                vm.question.collect {
+                    with(binding) {
+                        tvSum.text = it.sum.toString()
+                        tvVisible.text = it.visibleNumber.toString()
+                    }
+                    for ((textView, answer) in tvAnswers.zip(it.options)) {
+                        textView.text = answer.toString()
+                        textView.setOnClickListener {
+                            vm.chooseAnswer(textView.text.toString().toInt())
+                        }
+                    }
                 }
             }
         }

@@ -1,8 +1,6 @@
 package com.example.mathquize.presentation
 
 import android.os.CountDownTimer
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mathquize.domain.entity.GameResult
 import com.example.mathquize.domain.entity.GameSettings
@@ -10,6 +8,9 @@ import com.example.mathquize.domain.entity.Level
 import com.example.mathquize.domain.entity.Question
 import com.example.mathquize.domain.usecase.GenerateQuestionUseCase
 import com.example.mathquize.domain.usecase.GetGameSettingsUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class GameFragmentViewModel(
     private val generateQuestionUseCase: GenerateQuestionUseCase,
@@ -23,37 +24,30 @@ class GameFragmentViewModel(
     private var countOfQuestions = 0
     private var timer: CountDownTimer? = null
 
-    private var _time = MutableLiveData<String>()
-    val time: LiveData<String>
-        get() = _time
+    private var _time = MutableStateFlow("60")
+    val time: StateFlow<String> = _time.asStateFlow()
 
-    private val _question = MutableLiveData<Question>()
-    val question: LiveData<Question>
-        get() = _question
+    private val _question = MutableStateFlow(Question(0, 0, emptyList()))
+    val question: StateFlow<Question> = _question.asStateFlow()
 
-    private val _percentOfRightAnswers = MutableLiveData<Int>()
-    val percentOfRightAnswers
-        get() = _percentOfRightAnswers
+    private val _percentOfRightAnswers = MutableStateFlow(0)
+    val percentOfRightAnswers: StateFlow<Int> = _percentOfRightAnswers.asStateFlow()
 
-    private val _progressAnswers = MutableLiveData<String>()
-    val progressAnswer: LiveData<String>
-        get() = _progressAnswers
+    private val _progressAnswers = MutableStateFlow("0")
+    val progressAnswer: StateFlow<String> = _progressAnswers.asStateFlow()
 
-    private val _enoughCountOfRightAnswers = MutableLiveData<Boolean>()
-    val enoughCountOfRightAnswers: LiveData<Boolean>
-        get() = _enoughCountOfRightAnswers
+    private val _enoughCountOfRightAnswers = MutableStateFlow(false)
+    val enoughCountOfRightAnswers: StateFlow<Boolean> = _enoughCountOfRightAnswers.asStateFlow()
 
-    private val _enoughCountOfPercent = MutableLiveData<Boolean>()
-    val enoughPercent: LiveData<Boolean>
-        get() = _enoughCountOfPercent
+    private val _enoughCountOfPercent = MutableStateFlow(false)
+    val enoughPercent: StateFlow<Boolean> = _enoughCountOfPercent.asStateFlow()
 
-    private val _minPercent = MutableLiveData<Int>()
-    val minPercent: LiveData<Int>
-        get() = _minPercent
+    private val _minPercent = MutableStateFlow(0)
+    val minPercent: StateFlow<Int> = _minPercent.asStateFlow()
 
-    private val _gameResult = MutableLiveData<GameResult>()
-    val gameResult: LiveData<GameResult>
-        get() = _gameResult
+    private val _gameResult: MutableStateFlow<GameResult?> = MutableStateFlow(null)
+
+    val gameResult: StateFlow<GameResult?> = _gameResult.asStateFlow()
 
     init {
         getGameSettings()
@@ -89,7 +83,7 @@ class GameFragmentViewModel(
     }
 
     private fun checkAnswer(number: Int) {
-        if (number == _question.value?.rightAnswer) {
+        if (number == _question.value.rightAnswer) {
             countOfRightAnswers++
         }
         countOfQuestions++
@@ -117,7 +111,7 @@ class GameFragmentViewModel(
 
     private fun finishGame() {
         _gameResult.value = GameResult(
-            winner = _enoughCountOfRightAnswers.value == true && _enoughCountOfPercent.value == true,
+            winner = _enoughCountOfRightAnswers.value && _enoughCountOfPercent.value,
             countOfRightAnswers = countOfRightAnswers,
             countOfQuestions = countOfQuestions,
             gameSettings = gameSettings
